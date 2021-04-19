@@ -1,0 +1,39 @@
+---
+title: "Kalyan_VCF"
+author: "Kalyan Srivastava"
+date: "4/17/2021"
+output: html_document
+---
+
+```{r warning=FALSE, echo = FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+library(vcfR)
+#thisFile <- file.choose()
+vcf <- read.vcfR( thisFile, verbose = FALSE )
+vcf
+vcf %>% head()
+attributes(vcf)
+dna <- ape::read.dna(dna_file, format = "fasta")
+gff <- read.table(gff_file, sep="\t", quote="")
+chrom <- create.chromR(name='Supercontig', vcf=vcf, seq=dna, ann=gff)
+plot(chrom)
+
+```
+```{r warning=FALSE, echo = FALSE}
+chromoqc(chrom, xlim=c(5e+05, 6e+05))
+chromoqc(chrom, dp.alpha=20)
+```
+## R Markdown
+
+This is an R Markdown document. 
+
+```{r warning=FALSE, echo = FALSE}
+chrom <- masker(chrom, min_QUAL = 1, min_DP = 300, max_DP = 700, min_MQ = 59.9,  max_MQ = 60.1)
+plot(chrom)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+
